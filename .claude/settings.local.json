@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir:*)",
+      "Bash(chmod:*)",
+      "Bash(python:*)",
+      "Bash(curl:*)",
+      "Bash(source:*)",
+      "Bash(pip install:*)",
+      "Bash(.venv/bin/python -c \"import fastapi, uvicorn, streamlit, plotly, psutil, requests; print(''All dependencies available'')\")",
+      "Bash(.venv/bin/pip install:*)",
+      "Bash(.venv/bin/python:*)",
+      "Bash(python3:*)",
+      "Bash(.venv/bin/uvicorn:*)",
+      "Bash(pkill:*)",
+      "Bash(lsof:*)",
+      "Bash(xargs kill:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
