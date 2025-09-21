@@ -1,112 +1,29 @@
-# Python Terminal (pyterm)
+Building a Python-Based Command Terminal for CodeMate Hackathon
 
-A Python-only command terminal with macOS-friendly helpers, optional web UI, and lightweight system metrics.
+As part of the CodeMate Hackathon, I chose Problem Statement 1: Python-Based Command Terminal, which challenged participants to replicate the core behavior of a real terminal in Python while ensuring efficiency, correctness, and extensibility.
 
-## Badges
+My solution, PyTerm, is a safe and modular command terminal that brings together the familiarity of a shell and the flexibility of Python.
 
-[![CI](https://github.com/<your-user>/python_code_terminal/actions/workflows/ci.yml/badge.svg)](https://github.com/<your-user>/python_code_terminal/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+Key Features Implemented:
 
-> Replace `<your-user>` with your GitHub handle after pushing the repository.
+Core commands such as ls, cd, pwd, mkdir, rm, touch, cat, echo, clear, and help built natively in Python.
 
-## Features
+System monitoring through a custom sysinfo command that displays CPU and memory usage along with top processes.
 
-- **CLI REPL** with history, tab completion, and rich text output
-- **Built-in file commands** (`ls`, `cd`, `mkdir`, `cat`, etc.) plus optional macOS helpers (`open`, `pbcopy`, `spotlight`, `say`)
-- **External command runner** with timeouts, sanitized environment, and output truncation
-- **Lightweight metrics** surfaced via `sysinfo` (falls back gracefully when `psutil` is unavailable)
-- **Streamlit UI** mirroring the CLI experience with live CPU/Memory badges and command history
-- **Single-language stack**: backend and frontend are pure Python—no JS or CSS build steps
+External command execution with timeouts and output truncation to keep the environment safe and responsive.
 
-## Project Structure
+Error handling and safety with clear messages, sandboxing to prevent operations outside the working directory, and confirmation prompts for destructive commands.
 
-```
-.
-├── LICENSE
-├── README.md
-├── requirements.txt          # Root install convenience (includes backend requirements)
-├── launcher.py               # Unified launcher (backend + frontend)
-├── run.sh / run.bat          # Convenience wrappers
-├── backend/
-│   ├── app.py                # FastAPI endpoints
-│   ├── commands.py           # Built-in CLI commands
-│   ├── requirements.txt      # Core Python dependencies
-│   ├── run_cli.sh            # CLI-only launcher
-│   ├── run_web.sh            # Streamlit + API launcher
-│   ├── terminal.py           # REPL entrypoint
-│   └── ...
-├── frontend/
-│   └── app.py                # Streamlit application
-├── tests/
-│   └── smoke.md              # Manual test script
-└── .github/workflows/ci.yml  # GitHub Actions smoke checks
-```
+Interfaces: a CLI REPL for a traditional experience and an optional web interface (FastAPI + Streamlit) for ease of demonstration and hosted deployment.
 
-## Installation
+Operational Safeguards:
 
-```bash
-git clone https://github.com/<your-user>/python_code_terminal.git
-cd python_code_terminal
-python -m pip install --upgrade pip
-python -m pip install -r requirements.txt
-```
+Output is truncated for very large results.
 
-If `psutil` cannot be installed (offline environments) the CLI/Web UI continue to work—system metrics simply report `0.0`.
+Long-running external commands are automatically terminated.
 
-## Running the CLI
+All commands are sandboxed to ensure operations remain within the project environment.
 
-```bash
-cd backend
-./run_cli.sh   # or run_cli.bat on Windows
-```
+This project was built entirely in Python, with the help of CodeMate Build and CodeMate Extension to accelerate development. The modular design makes it easy to extend with features like command history, auto-completion, or even natural language command interpretation.
 
-The REPL prompt looks like `pyterm:/path/to/dir$`. Use standard commands (`pwd`, `ls`, `cd ..`, `echo "hi" > demo.txt`, `cat demo.txt`, `sysinfo`, `exit`). On macOS you can also try `pbcopy "Copied"`, `pbpaste`, `spotlight notes`, or `say "Task complete"`.
-
-## Running Backend + Frontend Together
-
-```bash
-python launcher.py
-```
-
-This command creates/refreshes `backend/.venv`, installs dependencies, starts FastAPI on `http://127.0.0.1:8000`, and launches Streamlit on `http://127.0.0.1:8501`. Both stay running until you press `Ctrl+C`.
-
-> **Offline / restricted environments:** If pip cannot reach PyPI or your OS blocks local ports, the launcher exits with a warning. You can still use `./run_cli.sh`, or start the API (`./run_api.sh`) and Streamlit (`streamlit run frontend/app.py`) manually once connectivity is restored.
-
-## Running the Web UI Manually
-
-```bash
-# Terminal 1 – API
-cd backend
-./run_api.sh
-
-# Terminal 2 – Streamlit
-cd frontend
-streamlit run app.py
-```
-
-Then open `http://127.0.0.1:8501`.
-
-## API Endpoints
-
-- `POST /exec` – execute a terminal command
-- `GET /sysinfo` – lightweight CPU/memory metrics + top processes
-- `GET /health` – health probe used by the launcher
-- `GET /docs` – autogenerated FastAPI docs
-
-## CI
-
-A lightweight GitHub Actions workflow (`.github/workflows/ci.yml`) installs dependencies, byte-compiles the code, and runs a CLI smoke command. Pushes and PRs against `main`/`master` trigger the job automatically.
-
-## License
-
-Released under the [MIT License](LICENSE).
-
-## Contributing
-
-1. Fork + clone
-2. Create a feature branch
-3. `python -m pip install -r requirements.txt`
-4. Make changes and run the CLI/Web UI locally
-5. Submit a PR (the CI workflow will run automatically)
-
-Issues and feature requests are welcome!
+Through this project, I was able to bring together system-level functionality, safety practices, and a clean user experience, while adhering to all hackathon guidelines.
