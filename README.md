@@ -69,3 +69,8 @@ Built entirely in Python with help from CodeMate Build and the CodeMate Extensio
 ## License
 
 See [LICENSE](LICENSE).
+
+
+---
+
+<sub>Made by [tanaytejush](https://github.com/tanaytejush)</sub>
