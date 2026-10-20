@@ -1,29 +1,71 @@
-Building a Python-Based Command Terminal for CodeMate Hackathon
+# PyTerm: A Python-Based Command Terminal
 
-As part of the CodeMate Hackathon, I chose Problem Statement 1: Python-Based Command Terminal, which challenged participants to replicate the core behavior of a real terminal in Python while ensuring efficiency, correctness, and extensibility.
+A safe, modular command terminal written in Python. It was my entry for **Problem Statement 1 (Python-Based Command Terminal)** at the CodeMate Hackathon, which asked for a terminal that reproduces core shell behaviour with efficiency, correctness and extensibility.
 
-My solution, PyTerm, is a safe and modular command terminal that brings together the familiarity of a shell and the flexibility of Python.
+PyTerm runs as a classic command-line REPL, and also has a web interface (FastAPI backend + Streamlit frontend) for easy demos and hosting.
 
-Key Features Implemented:
+## Features
 
-Core commands such as ls, cd, pwd, mkdir, rm, touch, cat, echo, clear, and help built natively in Python.
+- **Core commands built natively in Python**: `ls`, `cd`, `pwd`, `mkdir`, `rm`, `touch`, `cat`, `echo`, `clear`, `help`
+- **System monitoring**: a custom `sysinfo` command shows CPU and memory usage plus top processes
+- **External command execution** with timeouts and output truncation
+- **Safety first**: sandboxing keeps operations inside the working directory, and destructive commands ask for confirmation
+- **Clear error messages**
+- **Two interfaces**: CLI REPL and an optional web UI
 
-System monitoring through a custom sysinfo command that displays CPU and memory usage along with top processes.
+## Operational safeguards
 
-External command execution with timeouts and output truncation to keep the environment safe and responsive.
+- Very large output is truncated
+- Long-running external commands are terminated automatically
+- All commands are sandboxed to the project environment
 
-Error handling and safety with clear messages, sandboxing to prevent operations outside the working directory, and confirmation prompts for destructive commands.
+## Quick start
 
-Interfaces: a CLI REPL for a traditional experience and an optional web interface (FastAPI + Streamlit) for ease of demonstration and hosted deployment.
+```bash
+git clone https://github.com/tanaytejush/python_code_terminal.git
+cd python_code_terminal
+```
 
-Operational Safeguards:
+**Web interface** (creates a virtual environment, installs dependencies, starts the backend on port 8000 and Streamlit on port 8501):
 
-Output is truncated for very large results.
+```bash
+./run.sh        # Linux/macOS
+run.bat         # Windows
+```
 
-Long-running external commands are automatically terminated.
+**CLI only**:
 
-All commands are sandboxed to ensure operations remain within the project environment.
+```bash
+cd backend
+./run_cli.sh    # or run_cli.bat on Windows
+```
 
-This project was built entirely in Python, with the help of CodeMate Build and CodeMate Extension to accelerate development. The modular design makes it easy to extend with features like command history, auto-completion, or even natural language command interpretation.
+Other launchers in `backend/`: `run_api` (FastAPI only), `run_streamlit` (UI only) and `run_web`.
 
-Through this project, I was able to bring together system-level functionality, safety practices, and a clean user experience, while adhering to all hackathon guidelines.
+## Project structure
+
+```
+launcher.py        One-command setup and launch
+backend/
+  terminal.py      Terminal REPL
+  commands.py      Built-in commands
+  safety.py        Sandboxing and confirmations
+  sysmon.py        sysinfo command
+  runner.py        External command execution
+  app.py           FastAPI app
+frontend/app.py    Streamlit UI
+tests/smoke.md     Manual smoke tests
+codemate_prompts/  Prompts used during development
+```
+
+## Tech stack
+
+Python, FastAPI, Streamlit
+
+## Built with
+
+Built entirely in Python with help from CodeMate Build and the CodeMate Extension. The modular design makes it easy to add command history, auto-completion or natural language command interpretation.
+
+## License
+
+See [LICENSE](LICENSE).
